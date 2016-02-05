@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.min.mapper.SyroleMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache" eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/> -->
+	<resultMap id="SyroleResult" type="Syrole">
+		<id property="id" column="ID" javaType="java.lang.String"/>
+		<result property="createdatetime" column="CREATEDATETIME" javaType="java.util.Date"/>
+		<result property="description" column="DESCRIPTION" javaType="java.lang.String"/>
+		<result property="iconcls" column="ICONCLS" javaType="java.lang.String"/>
+		<result property="name" column="NAME" javaType="java.lang.String"/>
+		<result property="seq" column="SEQ" javaType="java.lang.Integer"/>
+		<result property="updatedatetime" column="UPDATEDATETIME" javaType="java.util.Date"/>
+	</resultMap>
+	<!-- 插入对象Syrole -->
+	<insert id="saveSyrole" parameterType="Syrole" flushCache="true">
+		insert into syrole (ID,CREATEDATETIME,DESCRIPTION,ICONCLS,NAME,SEQ,UPDATEDATETIME) 
+		values(#{id},#{createdatetime},#{description},#{iconcls},#{name},#{seq},#{updatedatetime})
+	</insert>
+	<!-- 插入对象Syrole选择性插入数据 -->
+	<insert id="saveSyroleSelective" parameterType="Syrole" flushCache="true">
+		insert into syrole
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			ID,
+			<if test="null != createdatetime ">CREATEDATETIME,</if>
+			<if test="null != description and '' != description ">DESCRIPTION,</if>
+			<if test="null != iconcls and '' != iconcls ">ICONCLS,</if>
+			NAME,
+			<if test="null != seq and seq > -1 ">SEQ,</if>
+			<if test="null != updatedatetime ">UPDATEDATETIME,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id},
+			<if test="null != createdatetime ">#{createdatetime},</if>
+			<if test="null != description and '' != description ">#{description},</if>
+			<if test="null != iconcls and '' != iconcls ">#{iconcls},</if>
+			#{name},
+			<if test="null != seq and seq > -1 ">#{seq},</if>
+			<if test="null != updatedatetime ">#{updatedatetime},</if>
+		</trim>
+	</insert>
+	<!-- 通过指定的ID删除对象Syrole -->
+	<delete id="deleteSyroleByid" parameterType="java.lang.String" flushCache="true">
+		delete from syrole where ID= #{id}
+	</delete>
+	<!-- 更新对象Syrole -->
+	<update id="updateSyrole" parameterType="Syrole" flushCache="true">
+		update syrole set 
+			<if test="null != createdatetime">
+				CREATEDATETIME = #{createdatetime},
+			</if>
+			<if test="null != description and '' != description ">
+				DESCRIPTION = #{description},
+			</if>
+			<if test="null != iconcls and '' != iconcls ">
+				ICONCLS = #{iconcls},
+			</if>
+			<if test="null != name and '' != name ">
+				NAME = #{name},
+			</if>
+			<if test="null != seq and seq > -1 ">
+				SEQ = #{seq},
+			</if>
+			<if test="null != updatedatetime">
+				UPDATEDATETIME = #{updatedatetime},
+			</if>
+			ID = #{id}
+		where ID = #{id}
+	</update>
+	<!-- 根据当前的id获取对象Syrole -->
+	<select id="querySyrole" resultMap="SyroleResult"  parameterType="java.lang.String">
+		select * from syrole where ID= #{id}
+	</select>
+	<!-- 获取当前的syrole表中所有的Syrole对象 -->
+	<select id="querySyroleList" resultMap="SyroleResult"  parameterType="Syrole">
+		select * from syrole where 1 = 1 
+		<if test="null != createdatetime">
+			and CREATEDATETIME = #{createdatetime}
+		</if>
+		<if test="null != description and '' != description ">
+			and DESCRIPTION = #{description}
+		</if>
+		<if test="null != iconcls and '' != iconcls ">
+			and ICONCLS = #{iconcls}
+		</if>
+		<if test="null != name and '' != name ">
+			and NAME = #{name}
+		</if>
+		<if test="null != seq and seq > -1 ">
+			and SEQ = #{seq}
+		</if>
+		<if test="null != updatedatetime">
+			and UPDATEDATETIME = #{updatedatetime}
+		</if>
+	</select>
+	<!-- 获取当前的syrole表中所有的Syrole对象，支持分页并支持自定义排序 -->
+	<select id="querySyroleLists" resultMap="SyroleResult"  parameterType="java.util.Map">
+		select * from syrole
+		<choose>
+			<when test="null != orderName and '' != orderName">
+				order by ${orderName}
+			</when>
+			<otherwise> order by ID DESC</otherwise>
+		</choose>
+	</select>
+	<!-- 所有的条件判断 -->
+	<!-- 
+		<if test="null != createdatetime">
+			CREATEDATETIME = #{createdatetime},
+		</if>
+		<if test="null != description and '' != description ">
+			DESCRIPTION = #{description},
+		</if>
+		<if test="null != iconcls and '' != iconcls ">
+			ICONCLS = #{iconcls},
+		</if>
+		<if test="null != name and '' != name ">
+			NAME = #{name},
+		</if>
+		<if test="null != seq and seq > -1 ">
+			SEQ = #{seq},
+		</if>
+		<if test="null != updatedatetime">
+			UPDATEDATETIME = #{updatedatetime},
+		</if>
+	-->
+</mapper>

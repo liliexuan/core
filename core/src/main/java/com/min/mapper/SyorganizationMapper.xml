@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.min.mapper.SyorganizationMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache" eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/> -->
+	<resultMap id="SyorganizationResult" type="Syorganization">
+		<id property="id" column="ID" javaType="java.lang.String"/>
+		<result property="address" column="ADDRESS" javaType="java.lang.String"/>
+		<result property="code" column="CODE" javaType="java.lang.String"/>
+		<result property="createdatetime" column="CREATEDATETIME" javaType="java.sql.Date"/>
+		<result property="iconcls" column="ICONCLS" javaType="java.lang.String"/>
+		<result property="name" column="NAME" javaType="java.lang.String"/>
+		<result property="seq" column="SEQ" javaType="java.lang.Integer"/>
+		<result property="updatedatetime" column="UPDATEDATETIME" javaType="java.sql.Date"/>
+		<result property="syorganizationId" column="SYORGANIZATION_ID" javaType="java.lang.String"/>
+	</resultMap>
+	<!-- 插入对象Syorganization -->
+	<insert id="saveSyorganization" parameterType="Syorganization" flushCache="true">
+		insert into syorganization (ID,ADDRESS,CODE,CREATEDATETIME,ICONCLS,NAME,SEQ,UPDATEDATETIME,SYORGANIZATION_ID) 
+		values(#{id},#{address},#{code},#{createdatetime},#{iconcls},#{name},#{seq},#{updatedatetime},#{syorganizationId})
+	</insert>
+	<!-- 插入对象Syorganization选择性插入数据 -->
+	<insert id="saveSyorganizationSelective" parameterType="Syorganization" flushCache="true">
+		insert into syorganization
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			ID,
+			<if test="null != address and '' != address ">ADDRESS,</if>
+			<if test="null != code and '' != code ">CODE,</if>
+			<if test="null != createdatetime ">CREATEDATETIME,</if>
+			<if test="null != iconcls and '' != iconcls ">ICONCLS,</if>
+			<if test="null != name and '' != name ">NAME,</if>
+			<if test="null != seq and seq > -1 ">SEQ,</if>
+			<if test="null != updatedatetime ">UPDATEDATETIME,</if>
+			<if test="null != syorganizationId and '' != syorganizationId ">SYORGANIZATION_ID,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id},
+			<if test="null != address and '' != address ">#{address},</if>
+			<if test="null != code and '' != code ">#{code},</if>
+			<if test="null != createdatetime ">#{createdatetime},</if>
+			<if test="null != iconcls and '' != iconcls ">#{iconcls},</if>
+			<if test="null != name and '' != name ">#{name},</if>
+			<if test="null != seq and seq > -1 ">#{seq},</if>
+			<if test="null != updatedatetime ">#{updatedatetime},</if>
+			<if test="null != syorganizationId and '' != syorganizationId ">#{syorganizationId},</if>
+		</trim>
+	</insert>
+	<!-- 通过指定的ID删除对象Syorganization -->
+	<delete id="deleteSyorganizationByid" parameterType="java.lang.String" flushCache="true">
+		delete from syorganization where ID= #{id}
+	</delete>
+	<!-- 更新对象Syorganization -->
+	<update id="updateSyorganization" parameterType="Syorganization" flushCache="true">
+		update syorganization set 
+			<if test="null != address and '' != address ">
+				ADDRESS = #{address},
+			</if>
+			<if test="null != code and '' != code ">
+				CODE = #{code},
+			</if>
+			<if test="null != createdatetime">
+				CREATEDATETIME = #{createdatetime},
+			</if>
+			<if test="null != iconcls and '' != iconcls ">
+				ICONCLS = #{iconcls},
+			</if>
+			<if test="null != name and '' != name ">
+				NAME = #{name},
+			</if>
+			<if test="null != seq and seq > -1 ">
+				SEQ = #{seq},
+			</if>
+			<if test="null != updatedatetime">
+				UPDATEDATETIME = #{updatedatetime},
+			</if>
+			<if test="null != syorganizationId and '' != syorganizationId ">
+				SYORGANIZATION_ID = #{syorganizationId},
+			</if>
+			ID = #{id}
+		where ID = #{id}
+	</update>
+	<!-- 根据当前的id获取对象Syorganization -->
+	<select id="querySyorganization" resultMap="SyorganizationResult"  parameterType="java.lang.String">
+		select * from syorganization where ID= #{id}
+	</select>
+	<!-- 获取当前的syorganization表中所有的Syorganization对象 -->
+	<select id="querySyorganizationList" resultMap="SyorganizationResult"  parameterType="Syorganization">
+		select * from syorganization where 1 = 1 
+		<if test="null != address and '' != address ">
+			and ADDRESS = #{address}
+		</if>
+		<if test="null != code and '' != code ">
+			and CODE = #{code}
+		</if>
+		<if test="null != createdatetime">
+			and CREATEDATETIME = #{createdatetime}
+		</if>
+		<if test="null != iconcls and '' != iconcls ">
+			and ICONCLS = #{iconcls}
+		</if>
+		<if test="null != name and '' != name ">
+			and NAME = #{name}
+		</if>
+		<if test="null != seq and seq > -1 ">
+			and SEQ = #{seq}
+		</if>
+		<if test="null != updatedatetime">
+			and UPDATEDATETIME = #{updatedatetime}
+		</if>
+		<if test="null != syorganizationId and '' != syorganizationId ">
+			and SYORGANIZATION_ID = #{syorganizationId}
+		</if>
+	</select>
+	<!-- 获取当前的syorganization表中所有的Syorganization对象，支持分页并支持自定义排序 -->
+	<select id="querySyorganizationLists" resultMap="SyorganizationResult"  parameterType="java.util.Map">
+		select * from syorganization
+		<choose>
+			<when test="null != orderName and '' != orderName">
+				order by ${orderName}
+			</when>
+			<otherwise> order by ID DESC</otherwise>
+		</choose>
+	</select>
+	<!-- 所有的条件判断 -->
+	<!-- 
+		<if test="null != address and '' != address ">
+			ADDRESS = #{address},
+		</if>
+		<if test="null != code and '' != code ">
+			CODE = #{code},
+		</if>
+		<if test="null != createdatetime">
+			CREATEDATETIME = #{createdatetime},
+		</if>
+		<if test="null != iconcls and '' != iconcls ">
+			ICONCLS = #{iconcls},
+		</if>
+		<if test="null != name and '' != name ">
+			NAME = #{name},
+		</if>
+		<if test="null != seq and seq > -1 ">
+			SEQ = #{seq},
+		</if>
+		<if test="null != updatedatetime">
+			UPDATEDATETIME = #{updatedatetime},
+		</if>
+		<if test="null != syorganizationId and '' != syorganizationId ">
+			SYORGANIZATION_ID = #{syorganizationId},
+		</if>
+	-->
+</mapper>

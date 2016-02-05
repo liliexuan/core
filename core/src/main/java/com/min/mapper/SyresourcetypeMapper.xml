@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.min.mapper.SyresourcetypeMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache" eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/> -->
+	<resultMap id="SyresourcetypeResult" type="Syresourcetype">
+		<id property="id" column="ID" javaType="java.lang.String"/>
+		<result property="createdatetime" column="CREATEDATETIME" javaType="java.util.Date"/>
+		<result property="description" column="DESCRIPTION" javaType="java.lang.String"/>
+		<result property="name" column="NAME" javaType="java.lang.String"/>
+		<result property="updatedatetime" column="UPDATEDATETIME" javaType="java.util.Date"/>
+	</resultMap>
+	<!-- 插入对象Syresourcetype -->
+	<insert id="saveSyresourcetype" parameterType="Syresourcetype" flushCache="true">
+		insert into somnus.syresourcetype (ID,CREATEDATETIME,DESCRIPTION,NAME,UPDATEDATETIME) 
+		values(#{id},#{createdatetime},#{description},#{name},#{updatedatetime})
+	</insert>
+	<!-- 插入对象Syresourcetype选择性插入数据 -->
+	<insert id="saveSyresourcetypeSelective" parameterType="Syresourcetype" flushCache="true">
+		insert into somnus.syresourcetype
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			ID,
+			<if test="null != createdatetime ">CREATEDATETIME,</if>
+			<if test="null != description and '' != description ">DESCRIPTION,</if>
+			NAME,
+			<if test="null != updatedatetime ">UPDATEDATETIME,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id},
+			<if test="null != createdatetime ">#{createdatetime},</if>
+			<if test="null != description and '' != description ">#{description},</if>
+			#{name},
+			<if test="null != updatedatetime ">#{updatedatetime},</if>
+		</trim>
+	</insert>
+	<!-- 通过指定的ID删除对象Syresourcetype -->
+	<delete id="deleteSyresourcetypeByid" parameterType="java.lang.String" flushCache="true">
+		delete from somnus.syresourcetype where ID= #{id}
+	</delete>
+	<!-- 更新对象Syresourcetype -->
+	<update id="updateSyresourcetype" parameterType="Syresourcetype" flushCache="true">
+		update somnus.syresourcetype set 
+			<if test="null != createdatetime">
+				CREATEDATETIME = #{createdatetime},
+			</if>
+			<if test="null != description and '' != description ">
+				DESCRIPTION = #{description},
+			</if>
+			<if test="null != name and '' != name ">
+				NAME = #{name},
+			</if>
+			<if test="null != updatedatetime">
+				UPDATEDATETIME = #{updatedatetime},
+			</if>
+			ID = #{id}
+		where ID = #{id}
+	</update>
+	<!-- 根据当前的id获取对象Syresourcetype -->
+	<select id="querySyresourcetype" resultMap="SyresourcetypeResult"  parameterType="java.lang.String">
+		select * from somnus.syresourcetype where ID= #{id}
+	</select>
+	<!-- 获取当前的somnus.syresourcetype表中所有的Syresourcetype对象 -->
+	<select id="querySyresourcetypeList" resultMap="SyresourcetypeResult"  parameterType="Syresourcetype">
+		select * from somnus.syresourcetype where 1 = 1 
+		<if test="null != createdatetime">
+			and CREATEDATETIME = #{createdatetime}
+		</if>
+		<if test="null != description and '' != description ">
+			and DESCRIPTION = #{description}
+		</if>
+		<if test="null != name and '' != name ">
+			and NAME = #{name}
+		</if>
+		<if test="null != updatedatetime">
+			and UPDATEDATETIME = #{updatedatetime}
+		</if>
+	</select>
+	<!-- 获取当前的somnus.syresourcetype表中所有的Syresourcetype对象，支持分页并支持自定义排序 -->
+	<select id="querySyresourcetypeLists" resultMap="SyresourcetypeResult"  parameterType="java.util.Map">
+		select * from somnus.syresourcetype
+		<choose>
+			<when test="null != orderName and '' != orderName">
+				order by ${orderName}
+			</when>
+			<otherwise> order by ID DESC</otherwise>
+		</choose>
+	</select>
+	<!-- 所有的条件判断 -->
+	<!-- 
+		<if test="null != createdatetime">
+			CREATEDATETIME = #{createdatetime},
+		</if>
+		<if test="null != description and '' != description ">
+			DESCRIPTION = #{description},
+		</if>
+		<if test="null != name and '' != name ">
+			NAME = #{name},
+		</if>
+		<if test="null != updatedatetime">
+			UPDATEDATETIME = #{updatedatetime},
+		</if>
+	-->
+</mapper>

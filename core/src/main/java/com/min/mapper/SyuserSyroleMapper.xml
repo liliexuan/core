@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.min.mapper.SyuserSyroleMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache" eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/> -->
+	<resultMap id="SyuserSyroleResult" type="SyuserSyrole">
+		<id property="syuserId" column="SYUSER_ID" javaType="java.lang.String"/>
+		<result property="syroleId" column="SYROLE_ID" javaType="java.lang.String"/>
+	</resultMap>
+	<!-- 插入对象SyuserSyrole -->
+	<insert id="saveSyuserSyrole" parameterType="SyuserSyrole" flushCache="true">
+		insert into syuser_syrole (SYUSER_ID,SYROLE_ID) 
+		values(#{syuserId},#{syroleId})
+	</insert>
+	<!-- 插入对象SyuserSyrole选择性插入数据 -->
+	<insert id="saveSyuserSyroleSelective" parameterType="SyuserSyrole" flushCache="true">
+		insert into syuser_syrole
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			SYUSER_ID,
+			SYROLE_ID,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{syuserId},
+			#{syroleId},
+		</trim>
+	</insert>
+	<!-- 通过指定的ID删除对象SyuserSyrole -->
+	<delete id="deleteSyuserSyroleBysyuserId" parameterType="java.lang.String" flushCache="true">
+		delete from syuser_syrole where SYUSER_ID= #{syuserId}
+	</delete>
+	<!-- 更新对象SyuserSyrole -->
+	<update id="updateSyuserSyrole" parameterType="SyuserSyrole" flushCache="true">
+		update syuser_syrole set 
+			<if test="null != syroleId and '' != syroleId ">
+				SYROLE_ID = #{syroleId},
+			</if>
+			SYUSER_ID = #{syuserId}
+		where SYUSER_ID = #{syuserId}
+	</update>
+	<!-- 根据当前的syuserId获取对象SyuserSyrole -->
+	<select id="querySyuserSyrole" resultMap="SyuserSyroleResult"  parameterType="java.lang.String">
+		select * from syuser_syrole where SYUSER_ID= #{syuserId}
+	</select>
+	<!-- 获取当前的syuser_syrole表中所有的SyuserSyrole对象 -->
+	<select id="querySyuserSyroleList" resultMap="SyuserSyroleResult"  parameterType="SyuserSyrole">
+		select * from syuser_syrole where 1 = 1 
+		<if test="null != syroleId and '' != syroleId ">
+			and SYROLE_ID = #{syroleId}
+		</if>
+	</select>
+	<!-- 获取当前的syuser_syrole表中所有的SyuserSyrole对象，支持分页并支持自定义排序 -->
+	<select id="querySyuserSyroleLists" resultMap="SyuserSyroleResult"  parameterType="java.util.Map">
+		select * from syuser_syrole
+		<choose>
+			<when test="null != orderName and '' != orderName">
+				order by ${orderName}
+			</when>
+			<otherwise> order by SYUSER_ID DESC</otherwise>
+		</choose>
+	</select>
+	<!-- 所有的条件判断 -->
+	<!-- 
+		<if test="null != syroleId and '' != syroleId ">
+			SYROLE_ID = #{syroleId},
+		</if>
+	-->
+</mapper>

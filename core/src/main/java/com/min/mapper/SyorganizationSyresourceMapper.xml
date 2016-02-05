@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.min.mapper.SyorganizationSyresourceMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache" eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/> -->
+	<resultMap id="SyorganizationSyresourceResult" type="SyorganizationSyresource">
+		<id property="syorganizationId" column="SYORGANIZATION_ID" javaType="java.lang.String"/>
+		<result property="syresourceId" column="SYRESOURCE_ID" javaType="java.lang.String"/>
+	</resultMap>
+	<!-- 插入对象SyorganizationSyresource -->
+	<insert id="saveSyorganizationSyresource" parameterType="SyorganizationSyresource" flushCache="true">
+		insert into syorganization_syresource (SYORGANIZATION_ID,SYRESOURCE_ID) 
+		values(#{syorganizationId},#{syresourceId})
+	</insert>
+	<!-- 插入对象SyorganizationSyresource选择性插入数据 -->
+	<insert id="saveSyorganizationSyresourceSelective" parameterType="SyorganizationSyresource" flushCache="true">
+		insert into syorganization_syresource
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			SYORGANIZATION_ID,
+			SYRESOURCE_ID,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{syorganizationId},
+			#{syresourceId},
+		</trim>
+	</insert>
+	<!-- 通过指定的ID删除对象SyorganizationSyresource -->
+	<delete id="deleteSyorganizationSyresourceBysyorganizationId" parameterType="java.lang.String" flushCache="true">
+		delete from syorganization_syresource where SYORGANIZATION_ID= #{syorganizationId}
+	</delete>
+	<!-- 更新对象SyorganizationSyresource -->
+	<update id="updateSyorganizationSyresource" parameterType="SyorganizationSyresource" flushCache="true">
+		update syorganization_syresource set 
+			<if test="null != syresourceId and '' != syresourceId ">
+				SYRESOURCE_ID = #{syresourceId},
+			</if>
+			SYORGANIZATION_ID = #{syorganizationId}
+		where SYORGANIZATION_ID = #{syorganizationId}
+	</update>
+	<!-- 根据当前的syorganizationId获取对象SyorganizationSyresource -->
+	<select id="querySyorganizationSyresource" resultMap="SyorganizationSyresourceResult"  parameterType="java.lang.String">
+		select * from syorganization_syresource where SYORGANIZATION_ID= #{syorganizationId}
+	</select>
+	<!-- 获取当前的syorganization_syresource表中所有的SyorganizationSyresource对象 -->
+	<select id="querySyorganizationSyresourceList" resultMap="SyorganizationSyresourceResult"  parameterType="SyorganizationSyresource">
+		select * from syorganization_syresource where 1 = 1 
+		<if test="null != syresourceId and '' != syresourceId ">
+			and SYRESOURCE_ID = #{syresourceId}
+		</if>
+	</select>
+	<!-- 获取当前的syorganization_syresource表中所有的SyorganizationSyresource对象，支持分页并支持自定义排序 -->
+	<select id="querySyorganizationSyresourceLists" resultMap="SyorganizationSyresourceResult"  parameterType="java.util.Map">
+		select * from syorganization_syresource
+		<choose>
+			<when test="null != orderName and '' != orderName">
+				order by ${orderName}
+			</when>
+			<otherwise> order by SYORGANIZATION_ID DESC</otherwise>
+		</choose>
+	</select>
+	<!-- 所有的条件判断 -->
+	<!-- 
+		<if test="null != syresourceId and '' != syresourceId ">
+			SYRESOURCE_ID = #{syresourceId},
+		</if>
+	-->
+</mapper>

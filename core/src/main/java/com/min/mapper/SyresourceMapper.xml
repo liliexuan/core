@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.min.mapper.SyresourceMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache" eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/> -->
+	<resultMap id="SyresourceResult" type="Syresource">
+		<id property="id" column="ID" javaType="java.lang.String"/>
+		<result property="createdatetime" column="CREATEDATETIME" javaType="java.util.Date"/>
+		<result property="description" column="DESCRIPTION" javaType="java.lang.String"/>
+		<result property="iconcls" column="ICONCLS" javaType="java.lang.String"/>
+		<result property="name" column="NAME" javaType="java.lang.String"/>
+		<result property="seq" column="SEQ" javaType="java.lang.Integer"/>
+		<result property="target" column="TARGET" javaType="java.lang.String"/>
+		<result property="updatedatetime" column="UPDATEDATETIME" javaType="java.util.Date"/>
+		<result property="url" column="URL" javaType="java.lang.String"/>
+		<result property="syresourceId" column="SYRESOURCE_ID" javaType="java.lang.String"/>
+		<result property="syresourcetypeId" column="SYRESOURCETYPE_ID" javaType="java.lang.String"/>
+	</resultMap>
+	<!-- 插入对象Syresource -->
+	<insert id="saveSyresource" parameterType="Syresource" flushCache="true">
+		insert into syresource (ID,CREATEDATETIME,DESCRIPTION,ICONCLS,NAME,SEQ,TARGET,UPDATEDATETIME,URL,SYRESOURCE_ID,SYRESOURCETYPE_ID) 
+		values(#{id},#{createdatetime},#{description},#{iconcls},#{name},#{seq},#{target},#{updatedatetime},#{url},#{syresourceId},#{syresourcetypeId})
+	</insert>
+	<!-- 插入对象Syresource选择性插入数据 -->
+	<insert id="saveSyresourceSelective" parameterType="Syresource" flushCache="true">
+		insert into syresource
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			ID,
+			<if test="null != createdatetime ">CREATEDATETIME,</if>
+			<if test="null != description and '' != description ">DESCRIPTION,</if>
+			<if test="null != iconcls and '' != iconcls ">ICONCLS,</if>
+			NAME,
+			<if test="null != seq and seq > -1 ">SEQ,</if>
+			<if test="null != target and '' != target ">TARGET,</if>
+			<if test="null != updatedatetime ">UPDATEDATETIME,</if>
+			<if test="null != url and '' != url ">URL,</if>
+			<if test="null != syresourceId and '' != syresourceId ">SYRESOURCE_ID,</if>
+			<if test="null != syresourcetypeId and '' != syresourcetypeId ">SYRESOURCETYPE_ID,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id},
+			<if test="null != createdatetime ">#{createdatetime},</if>
+			<if test="null != description and '' != description ">#{description},</if>
+			<if test="null != iconcls and '' != iconcls ">#{iconcls},</if>
+			#{name},
+			<if test="null != seq and seq > -1 ">#{seq},</if>
+			<if test="null != target and '' != target ">#{target},</if>
+			<if test="null != updatedatetime ">#{updatedatetime},</if>
+			<if test="null != url and '' != url ">#{url},</if>
+			<if test="null != syresourceId and '' != syresourceId ">#{syresourceId},</if>
+			<if test="null != syresourcetypeId and '' != syresourcetypeId ">#{syresourcetypeId},</if>
+		</trim>
+	</insert>
+	<!-- 通过指定的ID删除对象Syresource -->
+	<delete id="deleteSyresourceByid" parameterType="java.lang.String" flushCache="true">
+		delete from syresource where ID= #{id}
+	</delete>
+	<!-- 更新对象Syresource -->
+	<update id="updateSyresource" parameterType="Syresource" flushCache="true">
+		update syresource set 
+			<if test="null != createdatetime">
+				CREATEDATETIME = #{createdatetime},
+			</if>
+			<if test="null != description and '' != description ">
+				DESCRIPTION = #{description},
+			</if>
+			<if test="null != iconcls and '' != iconcls ">
+				ICONCLS = #{iconcls},
+			</if>
+			<if test="null != name and '' != name ">
+				NAME = #{name},
+			</if>
+			<if test="null != seq and seq > -1 ">
+				SEQ = #{seq},
+			</if>
+			<if test="null != target and '' != target ">
+				TARGET = #{target},
+			</if>
+			<if test="null != updatedatetime">
+				UPDATEDATETIME = #{updatedatetime},
+			</if>
+			<if test="null != url and '' != url ">
+				URL = #{url},
+			</if>
+			<if test="null != syresourceId and '' != syresourceId ">
+				SYRESOURCE_ID = #{syresourceId},
+			</if>
+			<if test="null != syresourcetypeId and '' != syresourcetypeId ">
+				SYRESOURCETYPE_ID = #{syresourcetypeId},
+			</if>
+			ID = #{id}
+		where ID = #{id}
+	</update>
+	<!-- 根据当前的id获取对象Syresource -->
+	<select id="querySyresource" resultMap="SyresourceResult"  parameterType="java.lang.String">
+		select * from syresource where ID= #{id}
+	</select>
+	<!-- 获取当前的syresource表中所有的Syresource对象 -->
+	<select id="querySyresourceList" resultMap="SyresourceResult"  parameterType="Syresource">
+		select * from syresource where 1 = 1 
+		<if test="null != createdatetime">
+			and CREATEDATETIME = #{createdatetime}
+		</if>
+		<if test="null != description and '' != description ">
+			and DESCRIPTION = #{description}
+		</if>
+		<if test="null != iconcls and '' != iconcls ">
+			and ICONCLS = #{iconcls}
+		</if>
+		<if test="null != name and '' != name ">
+			and NAME = #{name}
+		</if>
+		<if test="null != seq and seq > -1 ">
+			and SEQ = #{seq}
+		</if>
+		<if test="null != target and '' != target ">
+			and TARGET = #{target}
+		</if>
+		<if test="null != updatedatetime">
+			and UPDATEDATETIME = #{updatedatetime}
+		</if>
+		<if test="null != url and '' != url ">
+			and URL = #{url}
+		</if>
+		<if test="null != syresourceId and '' != syresourceId ">
+			and SYRESOURCE_ID = #{syresourceId}
+		</if>
+		<if test="null != syresourcetypeId and '' != syresourcetypeId ">
+			and SYRESOURCETYPE_ID = #{syresourcetypeId}
+		</if>
+	</select>
+	<!-- 获取当前的syresource表中所有的Syresource对象，支持分页并支持自定义排序 -->
+	<select id="querySyresourceLists" resultMap="SyresourceResult"  parameterType="java.util.Map">
+		select * from syresource
+		<choose>
+			<when test="null != orderName and '' != orderName">
+				order by ${orderName}
+			</when>
+			<otherwise> order by ID DESC</otherwise>
+		</choose>
+	</select>
+	<!-- 所有的条件判断 -->
+	<!-- 
+		<if test="null != createdatetime">
+			CREATEDATETIME = #{createdatetime},
+		</if>
+		<if test="null != description and '' != description ">
+			DESCRIPTION = #{description},
+		</if>
+		<if test="null != iconcls and '' != iconcls ">
+			ICONCLS = #{iconcls},
+		</if>
+		<if test="null != name and '' != name ">
+			NAME = #{name},
+		</if>
+		<if test="null != seq and seq > -1 ">
+			SEQ = #{seq},
+		</if>
+		<if test="null != target and '' != target ">
+			TARGET = #{target},
+		</if>
+		<if test="null != updatedatetime">
+			UPDATEDATETIME = #{updatedatetime},
+		</if>
+		<if test="null != url and '' != url ">
+			URL = #{url},
+		</if>
+		<if test="null != syresourceId and '' != syresourceId ">
+			SYRESOURCE_ID = #{syresourceId},
+		</if>
+		<if test="null != syresourcetypeId and '' != syresourcetypeId ">
+			SYRESOURCETYPE_ID = #{syresourcetypeId},
+		</if>
+	-->
+</mapper>

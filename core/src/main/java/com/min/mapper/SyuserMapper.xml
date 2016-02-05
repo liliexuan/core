@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.min.mapper.SyuserMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache" eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/> -->
+	<resultMap id="SyuserResult" type="Syuser">
+		<id property="id" column="ID" javaType="java.lang.String"/>
+		<result property="age" column="AGE" javaType="java.lang.Integer"/>
+		<result property="createdatetime" column="CREATEDATETIME" javaType="java.util.Date"/>
+		<result property="loginname" column="LOGINNAME" javaType="java.lang.String"/>
+		<result property="name" column="NAME" javaType="java.lang.String"/>
+		<result property="photo" column="PHOTO" javaType="java.lang.String"/>
+		<result property="pwd" column="PWD" javaType="java.lang.String"/>
+		<result property="sex" column="SEX" javaType="java.lang.String"/>
+		<result property="updatedatetime" column="UPDATEDATETIME" javaType="java.util.Date"/>
+		<result property="captcha" column="captcha" javaType="java.lang.String"/>
+		<result property="extTheme" column="extTheme" javaType="java.lang.String"/>
+		<result property="status" column="status" javaType="java.lang.String"/>
+	</resultMap>
+	<!-- 插入对象Syuser -->
+	<insert id="saveSyuser" parameterType="Syuser" flushCache="true">
+		insert into syuser (ID,AGE,CREATEDATETIME,LOGINNAME,NAME,PHOTO,PWD,SEX,UPDATEDATETIME,captcha,extTheme,status) 
+		values(#{id},#{age},#{createdatetime},#{loginname},#{name},#{photo},#{pwd},#{sex},#{updatedatetime},#{captcha},#{extTheme},#{status})
+	</insert>
+	<!-- 插入对象Syuser选择性插入数据 -->
+	<insert id="saveSyuserSelective" parameterType="Syuser" flushCache="true">
+		insert into syuser
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			ID,
+			<if test="null != age and age > -1 ">AGE,</if>
+			<if test="null != createdatetime ">CREATEDATETIME,</if>
+			LOGINNAME,
+			<if test="null != name and '' != name ">NAME,</if>
+			<if test="null != photo and '' != photo ">PHOTO,</if>
+			<if test="null != pwd and '' != pwd ">PWD,</if>
+			<if test="null != sex and '' != sex ">SEX,</if>
+			<if test="null != updatedatetime ">UPDATEDATETIME,</if>
+			<if test="null != captcha and '' != captcha ">captcha,</if>
+			<if test="null != extTheme and '' != extTheme ">extTheme,</if>
+			<if test="null != status and '' != status ">status,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id},
+			<if test="null != age and age > -1 ">#{age},</if>
+			<if test="null != createdatetime ">#{createdatetime},</if>
+			#{loginname},
+			<if test="null != name and '' != name ">#{name},</if>
+			<if test="null != photo and '' != photo ">#{photo},</if>
+			<if test="null != pwd and '' != pwd ">#{pwd},</if>
+			<if test="null != sex and '' != sex ">#{sex},</if>
+			<if test="null != updatedatetime ">#{updatedatetime},</if>
+			<if test="null != captcha and '' != captcha ">#{captcha},</if>
+			<if test="null != extTheme and '' != extTheme ">#{extTheme},</if>
+			<if test="null != status and '' != status ">#{status},</if>
+		</trim>
+	</insert>
+	<!-- 通过指定的ID删除对象Syuser -->
+	<delete id="deleteSyuserByid" parameterType="java.lang.String" flushCache="true">
+		delete from syuser where ID= #{id}
+	</delete>
+	<!-- 更新对象Syuser -->
+	<update id="updateSyuser" parameterType="Syuser" flushCache="true">
+		update syuser set 
+			<if test="null != age and age > -1 ">
+				AGE = #{age},
+			</if>
+			<if test="null != createdatetime">
+				CREATEDATETIME = #{createdatetime},
+			</if>
+			<if test="null != loginname and '' != loginname ">
+				LOGINNAME = #{loginname},
+			</if>
+			<if test="null != name and '' != name ">
+				NAME = #{name},
+			</if>
+			<if test="null != photo and '' != photo ">
+				PHOTO = #{photo},
+			</if>
+			<if test="null != pwd and '' != pwd ">
+				PWD = #{pwd},
+			</if>
+			<if test="null != sex and '' != sex ">
+				SEX = #{sex},
+			</if>
+			<if test="null != updatedatetime">
+				UPDATEDATETIME = #{updatedatetime},
+			</if>
+			<if test="null != captcha and '' != captcha ">
+				captcha = #{captcha},
+			</if>
+			<if test="null != extTheme and '' != extTheme ">
+				extTheme = #{extTheme},
+			</if>
+			<if test="null != status and '' != status ">
+				status = #{status},
+			</if>
+			ID = #{id}
+		where ID = #{id}
+	</update>
+	<!-- 根据当前的id获取对象Syuser -->
+	<select id="querySyuser" resultMap="SyuserResult"  parameterType="java.lang.String">
+		select * from syuser where ID= #{id}
+	</select>
+	<!-- 获取当前的syuser表中所有的Syuser对象 -->
+	<select id="querySyuserList" resultMap="SyuserResult"  parameterType="Syuser">
+		select * from syuser where 1 = 1 
+		<if test="null != age and age > -1 ">
+			and AGE = #{age}
+		</if>
+		<if test="null != createdatetime">
+			and CREATEDATETIME = #{createdatetime}
+		</if>
+		<if test="null != loginname and '' != loginname ">
+			and LOGINNAME = #{loginname}
+		</if>
+		<if test="null != name and '' != name ">
+			and NAME = #{name}
+		</if>
+		<if test="null != photo and '' != photo ">
+			and PHOTO = #{photo}
+		</if>
+		<if test="null != pwd and '' != pwd ">
+			and PWD = #{pwd}
+		</if>
+		<if test="null != sex and '' != sex ">
+			and SEX = #{sex}
+		</if>
+		<if test="null != updatedatetime">
+			and UPDATEDATETIME = #{updatedatetime}
+		</if>
+		<if test="null != captcha and '' != captcha ">
+			and captcha = #{captcha}
+		</if>
+		<if test="null != extTheme and '' != extTheme ">
+			and extTheme = #{extTheme}
+		</if>
+		<if test="null != status and '' != status ">
+			and status = #{status}
+		</if>
+	</select>
+	<!-- 获取当前的syuser表中所有的Syuser对象，支持分页并支持自定义排序 -->
+	<select id="querySyuserLists" resultMap="SyuserResult"  parameterType="java.util.Map">
+		select * from syuser
+		<choose>
+			<when test="null != orderName and '' != orderName">
+				order by ${orderName}
+			</when>
+			<otherwise> order by ID DESC</otherwise>
+		</choose>
+	</select>
+	<!-- 所有的条件判断 -->
+	<!-- 
+		<if test="null != age and age > -1 ">
+			AGE = #{age},
+		</if>
+		<if test="null != createdatetime">
+			CREATEDATETIME = #{createdatetime},
+		</if>
+		<if test="null != loginname and '' != loginname ">
+			LOGINNAME = #{loginname},
+		</if>
+		<if test="null != name and '' != name ">
+			NAME = #{name},
+		</if>
+		<if test="null != photo and '' != photo ">
+			PHOTO = #{photo},
+		</if>
+		<if test="null != pwd and '' != pwd ">
+			PWD = #{pwd},
+		</if>
+		<if test="null != sex and '' != sex ">
+			SEX = #{sex},
+		</if>
+		<if test="null != updatedatetime">
+			UPDATEDATETIME = #{updatedatetime},
+		</if>
+		<if test="null != captcha and '' != captcha ">
+			captcha = #{captcha},
+		</if>
+		<if test="null != extTheme and '' != extTheme ">
+			extTheme = #{extTheme},
+		</if>
+		<if test="null != status and '' != status ">
+			status = #{status},
+		</if>
+	-->
+</mapper>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.min.mapper.SyonlineMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache" eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/> -->
+	<resultMap id="SyonlineResult" type="Syonline">
+		<id property="id" column="ID" javaType="java.lang.String"/>
+		<result property="createdatetime" column="CREATEDATETIME" javaType="java.util.Date"/>
+		<result property="ip" column="IP" javaType="java.lang.String"/>
+		<result property="loginname" column="LOGINNAME" javaType="java.lang.String"/>
+		<result property="type" column="TYPE" javaType="java.lang.String"/>
+	</resultMap>
+	<!-- 插入对象Syonline -->
+	<insert id="saveSyonline" parameterType="Syonline" flushCache="true">
+		insert into syonline (ID,CREATEDATETIME,IP,LOGINNAME,TYPE) 
+		values(#{id},#{createdatetime},#{ip},#{loginname},#{type})
+	</insert>
+	<!-- 插入对象Syonline选择性插入数据 -->
+	<insert id="saveSyonlineSelective" parameterType="Syonline" flushCache="true">
+		insert into syonline
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			ID,
+			<if test="null != createdatetime ">CREATEDATETIME,</if>
+			<if test="null != ip and '' != ip ">IP,</if>
+			<if test="null != loginname and '' != loginname ">LOGINNAME,</if>
+			<if test="null != type and '' != type ">TYPE,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id},
+			<if test="null != createdatetime ">#{createdatetime},</if>
+			<if test="null != ip and '' != ip ">#{ip},</if>
+			<if test="null != loginname and '' != loginname ">#{loginname},</if>
+			<if test="null != type and '' != type ">#{type},</if>
+		</trim>
+	</insert>
+	<!-- 通过指定的ID删除对象Syonline -->
+	<delete id="deleteSyonlineByid" parameterType="java.lang.String" flushCache="true">
+		delete from syonline where ID= #{id}
+	</delete>
+	<!-- 更新对象Syonline -->
+	<update id="updateSyonline" parameterType="Syonline" flushCache="true">
+		update syonline set 
+			<if test="null != createdatetime">
+				CREATEDATETIME = #{createdatetime},
+			</if>
+			<if test="null != ip and '' != ip ">
+				IP = #{ip},
+			</if>
+			<if test="null != loginname and '' != loginname ">
+				LOGINNAME = #{loginname},
+			</if>
+			<if test="null != type and '' != type ">
+				TYPE = #{type},
+			</if>
+			ID = #{id}
+		where ID = #{id}
+	</update>
+	<!-- 根据当前的id获取对象Syonline -->
+	<select id="querySyonline" resultMap="SyonlineResult"  parameterType="java.lang.String">
+		select * from syonline where ID= #{id}
+	</select>
+	<!-- 获取当前的syonline表中所有的Syonline对象 -->
+	<select id="querySyonlineList" resultMap="SyonlineResult"  parameterType="Syonline">
+		select * from syonline where 1 = 1 
+		<if test="null != createdatetime">
+			and CREATEDATETIME = #{createdatetime}
+		</if>
+		<if test="null != ip and '' != ip ">
+			and IP = #{ip}
+		</if>
+		<if test="null != loginname and '' != loginname ">
+			and LOGINNAME = #{loginname}
+		</if>
+		<if test="null != type and '' != type ">
+			and TYPE = #{type}
+		</if>
+	</select>
+	<!-- 获取当前的syonline表中所有的Syonline对象，支持分页并支持自定义排序 -->
+	<select id="querySyonlineLists" resultMap="SyonlineResult"  parameterType="java.util.Map">
+		select * from syonline
+		<choose>
+			<when test="null != orderName and '' != orderName">
+				order by ${orderName}
+			</when>
+			<otherwise> order by ID DESC</otherwise>
+		</choose>
+	</select>
+	<!-- 所有的条件判断 -->
+	<!-- 
+		<if test="null != createdatetime">
+			CREATEDATETIME = #{createdatetime},
+		</if>
+		<if test="null != ip and '' != ip ">
+			IP = #{ip},
+		</if>
+		<if test="null != loginname and '' != loginname ">
+			LOGINNAME = #{loginname},
+		</if>
+		<if test="null != type and '' != type ">
+			TYPE = #{type},
+		</if>
+	-->
+</mapper>

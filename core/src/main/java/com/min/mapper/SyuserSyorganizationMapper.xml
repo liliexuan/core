@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.min.mapper.SyuserSyorganizationMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache" eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/> -->
+	<resultMap id="SyuserSyorganizationResult" type="SyuserSyorganization">
+		<id property="syuserId" column="SYUSER_ID" javaType="java.lang.String"/>
+		<result property="syorganizationId" column="SYORGANIZATION_ID" javaType="java.lang.String"/>
+	</resultMap>
+	<!-- 插入对象SyuserSyorganization -->
+	<insert id="saveSyuserSyorganization" parameterType="SyuserSyorganization" flushCache="true">
+		insert into syuser_syorganization (SYUSER_ID,SYORGANIZATION_ID) 
+		values(#{syuserId},#{syorganizationId})
+	</insert>
+	<!-- 插入对象SyuserSyorganization选择性插入数据 -->
+	<insert id="saveSyuserSyorganizationSelective" parameterType="SyuserSyorganization" flushCache="true">
+		insert into syuser_syorganization
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			SYUSER_ID,
+			SYORGANIZATION_ID,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{syuserId},
+			#{syorganizationId},
+		</trim>
+	</insert>
+	<!-- 通过指定的ID删除对象SyuserSyorganization -->
+	<delete id="deleteSyuserSyorganizationBysyuserId" parameterType="java.lang.String" flushCache="true">
+		delete from syuser_syorganization where SYUSER_ID= #{syuserId}
+	</delete>
+	<!-- 更新对象SyuserSyorganization -->
+	<update id="updateSyuserSyorganization" parameterType="SyuserSyorganization" flushCache="true">
+		update syuser_syorganization set 
+			<if test="null != syorganizationId and '' != syorganizationId ">
+				SYORGANIZATION_ID = #{syorganizationId},
+			</if>
+			SYUSER_ID = #{syuserId}
+		where SYUSER_ID = #{syuserId}
+	</update>
+	<!-- 根据当前的syuserId获取对象SyuserSyorganization -->
+	<select id="querySyuserSyorganization" resultMap="SyuserSyorganizationResult"  parameterType="java.lang.String">
+		select * from syuser_syorganization where SYUSER_ID= #{syuserId}
+	</select>
+	<!-- 获取当前的syuser_syorganization表中所有的SyuserSyorganization对象 -->
+	<select id="querySyuserSyorganizationList" resultMap="SyuserSyorganizationResult"  parameterType="SyuserSyorganization">
+		select * from syuser_syorganization where 1 = 1 
+		<if test="null != syorganizationId and '' != syorganizationId ">
+			and SYORGANIZATION_ID = #{syorganizationId}
+		</if>
+	</select>
+	<!-- 获取当前的syuser_syorganization表中所有的SyuserSyorganization对象，支持分页并支持自定义排序 -->
+	<select id="querySyuserSyorganizationLists" resultMap="SyuserSyorganizationResult"  parameterType="java.util.Map">
+		select * from syuser_syorganization
+		<choose>
+			<when test="null != orderName and '' != orderName">
+				order by ${orderName}
+			</when>
+			<otherwise> order by SYUSER_ID DESC</otherwise>
+		</choose>
+	</select>
+	<!-- 所有的条件判断 -->
+	<!-- 
+		<if test="null != syorganizationId and '' != syorganizationId ">
+			SYORGANIZATION_ID = #{syorganizationId},
+		</if>
+	-->
+</mapper>

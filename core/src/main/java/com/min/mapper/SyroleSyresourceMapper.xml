@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.min.mapper.SyroleSyresourceMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache" eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/> -->
+	<resultMap id="SyroleSyresourceResult" type="SyroleSyresource">
+		<id property="syresourceId" column="SYRESOURCE_ID" javaType="java.lang.String"/>
+		<result property="syroleId" column="SYROLE_ID" javaType="java.lang.String"/>
+	</resultMap>
+	<!-- 插入对象SyroleSyresource -->
+	<insert id="saveSyroleSyresource" parameterType="SyroleSyresource" flushCache="true">
+		insert into syrole_syresource (SYRESOURCE_ID,SYROLE_ID) 
+		values(#{syresourceId},#{syroleId})
+	</insert>
+	<!-- 插入对象SyroleSyresource选择性插入数据 -->
+	<insert id="saveSyroleSyresourceSelective" parameterType="SyroleSyresource" flushCache="true">
+		insert into syrole_syresource
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			SYRESOURCE_ID,
+			SYROLE_ID,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{syresourceId},
+			#{syroleId},
+		</trim>
+	</insert>
+	<!-- 通过指定的ID删除对象SyroleSyresource -->
+	<delete id="deleteSyroleSyresourceBysyresourceId" parameterType="java.lang.String" flushCache="true">
+		delete from syrole_syresource where SYRESOURCE_ID= #{syresourceId}
+	</delete>
+	<!-- 更新对象SyroleSyresource -->
+	<update id="updateSyroleSyresource" parameterType="SyroleSyresource" flushCache="true">
+		update syrole_syresource set 
+			<if test="null != syroleId and '' != syroleId ">
+				SYROLE_ID = #{syroleId},
+			</if>
+			SYRESOURCE_ID = #{syresourceId}
+		where SYRESOURCE_ID = #{syresourceId}
+	</update>
+	<!-- 根据当前的syresourceId获取对象SyroleSyresource -->
+	<select id="querySyroleSyresource" resultMap="SyroleSyresourceResult"  parameterType="java.lang.String">
+		select * from syrole_syresource where SYRESOURCE_ID= #{syresourceId}
+	</select>
+	<!-- 获取当前的syrole_syresource表中所有的SyroleSyresource对象 -->
+	<select id="querySyroleSyresourceList" resultMap="SyroleSyresourceResult"  parameterType="SyroleSyresource">
+		select * from syrole_syresource where 1 = 1 
+		<if test="null != syroleId and '' != syroleId ">
+			and SYROLE_ID = #{syroleId}
+		</if>
+	</select>
+	<!-- 获取当前的syrole_syresource表中所有的SyroleSyresource对象，支持分页并支持自定义排序 -->
+	<select id="querySyroleSyresourceLists" resultMap="SyroleSyresourceResult"  parameterType="java.util.Map">
+		select * from syrole_syresource
+		<choose>
+			<when test="null != orderName and '' != orderName">
+				order by ${orderName}
+			</when>
+			<otherwise> order by SYRESOURCE_ID DESC</otherwise>
+		</choose>
+	</select>
+	<!-- 所有的条件判断 -->
+	<!-- 
+		<if test="null != syroleId and '' != syroleId ">
+			SYROLE_ID = #{syroleId},
+		</if>
+	-->
+</mapper>
